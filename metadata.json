@@ -1,0 +1,6 @@
+{
+  "name": "Lumina Learning",
+  "description": "An intelligent English language learning platform featuring an AI avatar coach, adaptive learning, and interactive classroom management.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["AI Coaching", "Adaptive Learning", "Multi-user Classroom"]
+}
