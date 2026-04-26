@@ -12,28 +12,33 @@ interface AIAvatarProps {
 
 export function AIAvatar({ message }: AIAvatarProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-4 lg:p-8 space-y-6">
-      <div className="relative w-full max-w-2xl bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white shadow-brand-blue/20">
+    <div className="flex flex-col items-center justify-start p-4 lg:p-6 space-y-6 h-full min-h-[600px]">
+      <div className="relative w-full bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-slate-50">
         <iframe 
-          src="https://embed.liveavatar.com/v1/1a57e87b-50c1-4c49-a1fa-f058d784f138" 
-          allow="microphone" 
-          title="LiveAvatar Embed" 
-          className="w-full"
-          style={{ aspectRatio: '16/9' }}
+          src="https://bey.chat/700574d2-d244-4cb5-944d-8e3afed85408" 
+          title="Teacher Noor Avatar"
+          className="w-full h-[350px] md:h-[500px]"
+          frameBorder="0"
+          allowFullScreen
+          allow="camera; microphone; fullscreen"
+          style={{ border: 'none', maxWidth: '100%' }}
         />
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {message && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="bg-white px-8 py-5 rounded-[2rem] shadow-xl border-4 border-brand-blue/10 max-w-sm relative"
+            key={message}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="flex-1 w-full bg-brand-blue/5 p-6 rounded-[2rem] border-2 border-brand-blue/10 overflow-y-auto max-h-[250px] relative scrollbar-hide"
           >
-            {/* Speech bubble tail */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-white rotate-45 border-l-4 border-t-4 border-brand-blue/10" />
-            <p className="text-slate-700 font-bold text-lg text-center leading-tight">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-blue/40">Teacher Noor says:</span>
+            </div>
+            <p className="text-slate-700 font-bold text-base leading-relaxed">
               {message}
             </p>
           </motion.div>

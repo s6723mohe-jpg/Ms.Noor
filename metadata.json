@@ -1,6 +1,6 @@
 {
-  "name": "Lumina Learning",
-  "description": "An intelligent English language learning platform featuring an AI avatar coach, adaptive learning, and interactive classroom management.",
+  "name": "Teacher Noor",
+  "description": "An interactive Grade 4 English learning platform featuring Teacher Noor, an AI avatar coach with a magic board and smart help.",
   "requestFramePermissions": ["camera", "microphone"],
-  "majorCapabilities": ["AI Coaching", "Adaptive Learning", "Multi-user Classroom"]
+  "majorCapabilities": ["AI Coaching", "Smart Board", "Adaptive Learning"]
 }

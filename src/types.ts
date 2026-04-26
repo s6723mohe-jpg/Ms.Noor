@@ -9,7 +9,7 @@ export interface User {
   id: string;
   name: string;
   role: UserRole;
-  level: 'beginner' | 'intermediate' | 'advanced';
+  level: 'beginner' | 'intermediate' | 'advanced' | 'Grade 4';
   xp: number;
   badges: string[];
 }
