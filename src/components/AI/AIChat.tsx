@@ -14,9 +14,18 @@ interface AIChatProps {
   userLevel: string;
   onAnalysisStart?: () => void;
   onAnalysisEnd?: (type: 'text' | 'file' | 'voice', response?: string) => void;
+  showInternalHeader?: boolean;
+  className?: string;
 }
 
-export function AIChat({ userRole, userLevel, onAnalysisStart, onAnalysisEnd }: AIChatProps) {
+export function AIChat({ 
+  userRole, 
+  userLevel, 
+  onAnalysisStart, 
+  onAnalysisEnd,
+  showInternalHeader = true,
+  className = ""
+}: AIChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -182,20 +191,22 @@ export function AIChat({ userRole, userLevel, onAnalysisStart, onAnalysisEnd }: 
   };
 
   return (
-    <div className="flex flex-col h-[700px] bg-white rounded-[3rem] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.08)] border-4 border-slate-50">
+    <div className={`flex flex-col h-full bg-white rounded-[3rem] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.08)] border-4 border-slate-50 ${className}`}>
       {/* Header */}
-      <div className="bg-brand-blue p-6 flex flex-col gap-2 border-b-4 border-black/5">
-        <div className="flex items-center justify-between">
-          <h3 className="text-white font-black text-xl flex items-center gap-3">
-            <div className="w-5 h-5 rounded-full bg-brand-green border-4 border-white shadow-sm" />
-            Ask Teacher Noor
-          </h3>
-          <span className="text-[10px] text-white/60 font-black uppercase tracking-widest">Smart Help 🤖</span>
+      {showInternalHeader && (
+        <div className="bg-brand-purple p-6 flex flex-col gap-2 border-b-4 border-black/5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-white font-black text-xl flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full bg-brand-green border-4 border-white shadow-sm" />
+              Chat with Noor
+            </h3>
+            <span className="text-[10px] text-white/60 font-black uppercase tracking-widest">Smart Help 🤖</span>
+          </div>
+          <p className="text-brand-glow text-[10px] font-bold opacity-80 uppercase tracking-tighter">
+            Homework • Questions • Image Help • Voice
+          </p>
         </div>
-        <p className="text-brand-blue-100 text-[10px] font-bold opacity-80 uppercase tracking-tighter">
-          Homework • Questions • Image Help • Voice
-        </p>
-      </div>
+      )}
 
       {/* Messages */}
       <div 
@@ -234,9 +245,9 @@ export function AIChat({ userRole, userLevel, onAnalysisStart, onAnalysisEnd }: 
               className="flex justify-start"
             >
               <div className="bg-white p-5 rounded-[2rem] flex gap-3 border-4 border-slate-50 shadow-sm">
-                <div className="w-3 h-3 rounded-full bg-brand-blue animate-bounce" />
-                <div className="w-3 h-3 rounded-full bg-brand-green animate-bounce [animation-delay:0.2s]" />
-                <div className="w-3 h-3 rounded-full bg-brand-orange animate-bounce [animation-delay:0.4s]" />
+                <div className="w-3 h-3 rounded-full bg-brand-purple animate-bounce" />
+                <div className="w-3 h-3 rounded-full bg-brand-soft animate-bounce [animation-delay:0.2s]" />
+                <div className="w-3 h-3 rounded-full bg-brand-lavender animate-bounce [animation-delay:0.4s]" />
               </div>
             </motion.div>
           )}
@@ -244,20 +255,24 @@ export function AIChat({ userRole, userLevel, onAnalysisStart, onAnalysisEnd }: 
       </div>
 
       {/* Input Section */}
-      <div className="p-8 bg-white border-t-4 border-slate-50 space-y-6">
+      <div className="p-6 bg-white border-t-4 border-slate-50 space-y-4">
         {attachedFile && (
-          <div className="flex items-center justify-between bg-slate-50 p-3 rounded-2xl border-2 border-brand-blue/20 animate-pulse">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center justify-between bg-brand-light p-3 rounded-2xl border-2 border-brand-purple/20"
+          >
             <div className="flex items-center gap-3 overflow-hidden">
-              <Paperclip size={20} className="text-brand-blue shrink-0" />
+              <Paperclip size={18} className="text-brand-purple shrink-0" />
               <span className="text-xs font-black text-slate-600 truncate">{attachedFile.name}</span>
             </div>
             <button onClick={() => setAttachedFile(null)} className="p-1 hover:bg-slate-200 rounded-full transition-colors">
-              <X size={18} className="text-slate-400" />
+              <X size={16} className="text-slate-400" />
             </button>
-          </div>
+          </motion.div>
         )}
-
-        <div className="flex items-center justify-center gap-6">
+        
+        <div className="flex items-center gap-3">
           <input 
             type="file" 
             ref={fileInputRef} 
@@ -265,52 +280,55 @@ export function AIChat({ userRole, userLevel, onAnalysisStart, onAnalysisEnd }: 
             className="hidden" 
             accept="image/*,video/*,application/pdf,.doc,.docx"
           />
-          <button 
-            onClick={() => fileInputRef.current?.click()}
-            className="p-5 bg-brand-pink/10 text-brand-pink rounded-[1.5rem] hover:bg-brand-pink/20 transition-all btn-bouncy group"
-          >
-            <Paperclip size={28} strokeWidth={3} className="group-hover:rotate-12 transition-transform" />
-          </button>
           
-          <button 
-            onMouseDown={startRecording}
-            onMouseUp={stopRecording}
-            onMouseLeave={stopRecording}
-            onTouchStart={startRecording}
-            onTouchEnd={stopRecording}
-            className={`p-5 rounded-[1.5rem] transition-all btn-bouncy group ${
-              isRecording ? 'bg-red-500 text-white scale-110 shadow-xl shadow-red-200' : 'bg-brand-orange/10 text-brand-orange hover:bg-brand-orange/20'
-            }`}
-          >
-            <Mic size={28} strokeWidth={3} className={isRecording ? 'animate-pulse' : ''} />
-          </button>
-
-          <button className="p-5 bg-brand-green/10 text-brand-green rounded-[1.5rem] hover:bg-brand-green/20 transition-all btn-bouncy">
-            <Video size={28} strokeWidth={3} />
-          </button>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder={isRecording ? 'Listening...' : 'Ask Teacher Noor anything!'}
-            disabled={isRecording}
-            className="flex-1 bg-slate-50 border-4 border-transparent rounded-[2rem] px-8 py-5 text-base font-black placeholder:text-slate-300 focus:border-brand-blue/20 transition-all outline-none"
-          />
+          <div className="flex-1 relative flex items-center">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              placeholder={isRecording ? 'Listening...' : 'Type your message...'}
+              disabled={isRecording}
+              className="w-full bg-slate-50 border-2 border-transparent rounded-[1.5rem] px-6 py-4 text-sm font-bold placeholder:text-slate-300 focus:border-brand-purple/10 focus:bg-white transition-all outline-none pr-24"
+            />
+            
+            <div className="absolute right-2 flex items-center gap-1">
+              <button 
+                onMouseDown={startRecording}
+                onMouseUp={stopRecording}
+                onMouseLeave={stopRecording}
+                onTouchStart={startRecording}
+                onTouchEnd={stopRecording}
+                className={`p-2 rounded-xl transition-all ${
+                  isRecording ? 'bg-red-500 text-white animate-pulse' : 'text-slate-400 hover:text-brand-soft hover:bg-brand-soft/5'
+                }`}
+                title="Voice Input"
+              >
+                <Mic size={20} strokeWidth={2.5} />
+              </button>
+ 
+              <button 
+                onClick={() => fileInputRef.current?.click()}
+                className="p-2 text-slate-400 hover:text-brand-purple hover:bg-brand-purple/5 rounded-xl transition-all group"
+                title="Upload File"
+              >
+                <Paperclip size={20} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" />
+              </button>
+            </div>
+          </div>
+ 
           <button
             onClick={() => handleSend()}
             disabled={(!input.trim() && !attachedFile) || isTyping || isRecording}
-            className="bg-brand-blue text-white p-5 rounded-[2rem] shadow-xl shadow-brand-blue/30 disabled:opacity-30 transition-all btn-bouncy"
+            className="bg-brand-purple text-white p-4 rounded-[1.2rem] shadow-lg shadow-brand-purple/20 disabled:opacity-30 transition-all active:scale-95 group"
           >
-            <Send size={28} strokeWidth={3} />
+            <Send size={24} strokeWidth={2.5} />
           </button>
         </div>
+
         {isRecording && (
-          <p className="text-[10px] text-center font-black text-red-500 uppercase tracking-widest animate-bounce">
-            Recording in progress... Release to send!
+          <p className="text-[10px] text-center font-black text-red-500 uppercase tracking-widest animate-pulse">
+            Recording... Release to send
           </p>
         )}
       </div>
